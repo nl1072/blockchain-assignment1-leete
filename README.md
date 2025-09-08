@@ -16,4 +16,5 @@
 
 ## Reflection:
 The principle of using hashes to ensure immutability of a blockchain is simple. Each block contains a "proof of work" in the form of a hash value generated when the block is mined. Each block's hash value is generated based on the nonce value of the previous block. In order to alter the block, you would have to recompute the hash of said block, as well as the hashes of any blocks before it. This results in an exponential increaase in computational requirements as the length of the chain increases, making it impractical to alter. This is why proof-of-work makes blockchains so secure.
-\nThe biggest surprise I had when coding this was its relative simplicity. The most complex parts of the implementation would probably be the math involved in the hash itself rather than anything in the design of the blockchain.
+
+The biggest surprise I had when coding this was its relative simplicity. The most complex parts of the implementation would probably be the math involved in the hash itself rather than anything in the design of the blockchain.
