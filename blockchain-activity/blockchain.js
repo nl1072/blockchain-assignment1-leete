@@ -33,8 +33,10 @@ class Block {
     }
     /** Proof-of-Work: find a hash starting with N leading zeros */
     mineBlock(difficulty) {
-        const target = '0'.repeat(difficulty);
-        while (this.hash.substring(0, difficulty) !== target) {
+        /** Forces the difficulty of a hash to be minimum 3 */
+        const min_difficulty = Math.max(3, difficulty);
+        const target = '0'.repeat(min_difficulty);
+        while (this.hash.substring(0, min_difficulty) !== target) {
             this.nonce++;
             this.hash = this.calculateHash();
         }
@@ -78,6 +80,7 @@ class Blockchain {
 }
 /* ---------------------- DEMO / WALKTHROUGH ---------------------- */
 function main() {
+    /**
     // 1) Create a chain
     const demoCoin = new Blockchain(3); // difficulty=3 is a good starter
     // 2) Add blocks with simple "transactions" (objects or arrays)
@@ -102,5 +105,35 @@ function main() {
     demoCoin.chain[1].data.amount = 9999;
     console.log(' Is chain valid after tamper?',
     demoCoin.isChainValid());
+    */
+
+    // My blockchain
+    // 1) Create chain
+    const rooCoin = new Blockchain(2) // set difficulty = 2 to test minimum difficulty setting
+    // 2) Add blocks with transactions
+    console.log(' Mining block #1 ...');
+    rooCoin.addBlock(new Block(1, Date.now().toString(), { from:
+    'Ian', to: 'Jessie', amount: 40 }));
+    console.log(' Mining block #2 ...');
+    rooCoin.addBlock(new Block(2, Date.now().toString(), [
+        { from: 'Kelly', to: 'Lance', amount: 67 },
+        { from: 'Monika', to: 'Natsuki', amount: 60 }
+    ]));
+    console.log(' Mining block #3 ...');
+    rooCoin.addBlock(new Block(3, Date.now().toString(), [
+        { from: 'Orion', to: 'Phoebe', amount: 80 },
+        { from: 'Queen', to: 'Rolling Stones', amount: 120}
+    ]));
+    // 3) Show the chain
+    console.log('\nFull chain:');
+    console.log(JSON.stringify(rooCoin, null, 2));
+    // 4) Validate
+    console.log('\n Is chain valid?', rooCoin.isChainValid());
+    // 5) Tamper with a block
+    console.log('Tampering with Block #3 data...');
+    rooCoin.chain[3].data[1].from = 'Keith';
+    console.log(' Is chain valid after tamper?',
+    rooCoin.isChainValid());
+    
 }
 main()
